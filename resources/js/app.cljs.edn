@@ -1,0 +1,3 @@
+{:require  [parserito.app]
+ :init-fns [parserito.app/init]
+ :compiler-options {:asset-path "js/app.out"}}
