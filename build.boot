@@ -32,12 +32,12 @@
   identity)
 
 (deftask build []
-  (comp ;; (speak)
-   (production)
-   (cljs)
-   (garden :styles-var 'parserito.styles/screen
-           :output-to "css/garden.css")
-   (target)))
+  (comp (notify :audible true)
+        (production)
+        (cljs)
+        (garden :styles-var 'parserito.styles/screen
+                :output-to "css/garden.css")
+        (target)))
 
 (deftask run []
   (comp (serve)
