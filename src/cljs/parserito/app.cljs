@@ -97,8 +97,7 @@
  \"bool2\":false,
  \"map key\":{\"hi\":\"there\"},
  \"array key\":[1,2,3]
-}"
-         )
+}")
 
   (swap! state
          assoc
@@ -121,12 +120,16 @@ array = <open-square> (value (<comma> value)*)* <close-square>
 whitespace =  #'\\s'*
 colon = whitespace ':' whitespace
 quote = '\"'
-open-curly = whitespace '{' whitespace close-curly = whitespace '}' whitespace
-open-square = whitespace '[' whitespace close-square = whitespace ']' whitespace")
+open-curly = whitespace '{' whitespace
+close-curly = whitespace '}' whitespace
+open-square = whitespace '[' whitespace
+close-square = whitespace ']' whitespace")
 
   (let [[exception parser] (make-parser (:value @state))]
     ;; set the value of the parser field to the parser
     (swap! state
            assoc
            :parser
-           parser)))
+           parser)
+
+    (try-parse! exception)))
