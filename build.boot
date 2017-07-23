@@ -2,8 +2,8 @@
  :source-paths    #{"src/cljs" "src/clj"}
  :resource-paths  #{"resources"}
  :dependencies '[[org.clojure/clojure "1.9.0-alpha17"]
-                 [org.clojure/clojurescript "1.9.562"]
-                 [reagent "0.6.2"]
+                 [org.clojure/clojurescript "1.9.671"]
+                 [reagent "0.7.0"]
                  [instaparse "1.4.7"]
                  [adzerk/boot-cljs              "2.0.0"   :scope "test"]
                  [adzerk/boot-cljs-repl         "0.3.3"   :scope "test"]
