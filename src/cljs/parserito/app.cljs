@@ -15,11 +15,6 @@
     (catch :default e
       [e nil])))
 
-(defn result-display []
-  (if (:result @state)
-    [:div (with-out-str
-            (pprint/pprint (:result @state)))]))
-
 (defn try-parse! [failure-value]
   (swap! state
          assoc
@@ -58,29 +53,48 @@
 
   (try-parse! nil))
 
-(defn grammar-input [{:keys [id]}]
-  [:div.float-left.marg
-   [:h3 "parse description!"
-    [:textarea.textarea-size {:type "text"
-                              :value (:value @state)
-                              :on-change update-parse-desc!}]]])
+(defn grammar-input []
+  [:div
+   [:h3 "grammar"]
+   [:textarea {:type "text"
+               :class "form-control"
+               :rows "15"
+               :value (:value @state)
+               :on-change update-parse-desc!}]])
 
 (defn text-corpus []
-  [:div.float-left.marg
-   [:h3 "parse input!"
-    [:textarea.textarea-size {:type "text"
-                              :value (:input-text @state)
-                              :on-change parse!}]]])
+  [:div
+   [:h3 "input"]
+   [:textarea {:type "text"
+               :class "form-control"
+               :rows "15"
+               :value (:input-text @state)
+               :on-change parse!}]])
 
-;; haha css
-(defn clearfix [] [:div.clearfix])
+(defn result-display []
+  (if (:result @state)
+    [:div
+     [:textarea {:type "text"
+                 :class "form-control"
+                 :rows "30"
+                 :value (with-out-str
+                          (pprint/pprint (:result @state)))
+                 :readonly ""}]]))
+
+(defn left-col []
+  [:div {:class "col-lg"}
+   [grammar-input]
+   [text-corpus]])
+
+(defn right-col []
+  [:div {:class "col-lg"}
+   [:h3 "result"]
+   [result-display]])
 
 (defn calling-component []
-  [:div
-   [grammar-input]
-   [text-corpus]
-   [result-display]
-   [clearfix]])
+  [:div {:class "row"}
+   [left-col]
+   [right-col]])
 
 (defn init []
   (r/render-component [calling-component]
