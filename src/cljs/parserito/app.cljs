@@ -3,10 +3,10 @@
             [instaparse.core :as insta]
             [cljs.pprint :as pprint]))
 
-(def state (r/atom {:value ""
-                    :parser nil
-                    :result nil
-                    :input-text nil}))
+(defonce state (r/atom {:value ""
+                        :parser nil
+                        :result nil
+                        :input-text nil}))
 
 (defn make-parser [text]
   (try

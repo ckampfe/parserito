@@ -1,18 +1,18 @@
 (set-env!
  :source-paths    #{"src/cljs" "src/clj"}
  :resource-paths  #{"resources"}
- :dependencies '[[org.clojure/clojure "1.9.0-alpha17"]
-                 [org.clojure/clojurescript "1.9.671"]
-                 [reagent "0.7.0"]
-                 [instaparse "1.4.7"]
-                 [adzerk/boot-cljs              "2.0.0"   :scope "test"]
+ :dependencies '[[org.clojure/clojure "1.9.0"]
+                 [org.clojure/clojurescript "1.9.946"]
+                 [reagent "0.8.0-alpha2"]
+                 [instaparse "1.4.8"]
+                 [adzerk/boot-cljs              "2.1.4"   :scope "test"]
                  [adzerk/boot-cljs-repl         "0.3.3"   :scope "test"]
-                 [adzerk/boot-reload            "0.5.1"   :scope "test"]
+                 [adzerk/boot-reload            "0.5.2"   :scope "test"]
                  [pandeiro/boot-http            "0.8.3"   :scope "test"]
                  [com.cemerick/piggieback       "0.2.2"   :scope "test"]
-                 [org.clojure/tools.nrepl       "0.2.12"  :scope "test"]
+                 [org.clojure/tools.nrepl       "0.2.13"  :scope "test"]
                  [weasel                        "0.7.0"   :scope "test"]
-                 [org.martinklepsch/boot-garden "1.3.2-0" :scope "test"]])
+                 [org.martinklepsch/boot-garden "1.3.2-1" :scope "test"]])
 
 (require
  '[adzerk.boot-cljs      :refer [cljs]]
@@ -33,7 +33,6 @@
 
 (deftask build []
   (comp (notify :audible true)
-        (production)
         (cljs)
         (garden :styles-var 'parserito.styles/screen
                 :output-to "css/garden.css")
