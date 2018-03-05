@@ -18,16 +18,16 @@ number = digit+
 <digit> = #'[0-9]'
 bool = 'true' | 'false'
 null = 'null'
-  object = <open-curly> keypairs <close-curly>
-  array = <open-square> (value (<comma> value)*)* <close-square>
-  <comma> = whitespace ',' whitespace
-  whitespace =  #'\\s'*
-  colon = whitespace ':' whitespace
-  quote = '\"'
-  open-curly = whitespace '{' whitespace
-  close-curly = whitespace '}' whitespace
-  open-square = whitespace '[' whitespace
-  close-square = whitespace ']' whitespace")
+object = <open-curly> keypairs <close-curly>
+array = <open-square> (value (<comma> value)*)* <close-square>
+<comma> = whitespace ',' whitespace
+whitespace =  #'\\s'*
+colon = whitespace ':' whitespace
+quote = '\"'
+open-curly = whitespace '{' whitespace
+close-curly = whitespace '}' whitespace
+open-square = whitespace '[' whitespace
+close-square = whitespace ']' whitespace")
 
 (def initial-input-text "{
   \"numbers\":123,
@@ -38,7 +38,7 @@ null = 'null'
   \"bool2\":false,
   \"map key\":{\"hi\":\"there\"},
   \"array key\":[1,2,3]
-  }")
+}")
 
 (defn make-parser [text]
   (try
