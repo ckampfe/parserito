@@ -88,22 +88,13 @@ close-square = whitespace ']' whitespace")
                                 exception)
                 :should-recompute-parser false)}))
 
-(defn parse [{:keys [db] :as coeffects} [_ change]]
-  (let [parser (:parser db)
-        exception (:exception db)]
-    {:db (assoc db
-                :input-text change
-                :parse-result (if (and parser (seq (:input-text db)))
-                                (parser (:input-text db))
-                                exception))}))
-
 (defn update-input-text [{:keys [db] :as coeffects} [_ change]]
   (let [parser (:parser db)
         exception (:exception db)]
     {:db (assoc db
                 :input-text change
-                :parse-result (if (and parser (seq (:input-text db)))
-                                (parser (:input-text db))
+                :parse-result (if (and parser (seq change))
+                                (parser change)
                                 exception))}))
 
 (defn reset-parser-update-latch [{:keys [db] :as coeffects} [_ _]]
@@ -118,10 +109,6 @@ close-square = whitespace ']' whitespace")
 (rf/reg-event-fx
  :update-parse-description
  update-parse-description)
-
-(rf/reg-event-fx
- :parse
- parse)
 
 (rf/reg-event-fx
  :update-input-text
