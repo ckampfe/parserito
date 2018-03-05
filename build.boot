@@ -30,6 +30,7 @@
 
 (deftask development []
   (task-options! cljs {:optimizations :none :source-map true}
+                 repl {:middleware '[cemerick.piggieback/wrap-cljs-repl]}
                  reload {:on-jsload 'parserito.app/init})
   identity)
 
