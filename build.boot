@@ -3,8 +3,10 @@
  :resource-paths  #{"resources"}
  :dependencies '[[org.clojure/clojure "1.9.0"]
                  [org.clojure/clojurescript "1.9.946"]
+                 [org.clojure/core.async "0.4.474"]
                  [reagent "0.8.0-alpha2"]
                  [instaparse "1.4.8"]
+                 [re-frame "0.10.5"]
                  [adzerk/boot-cljs              "2.1.4"   :scope "test"]
                  [adzerk/boot-cljs-repl         "0.3.3"   :scope "test"]
                  [adzerk/boot-reload            "0.5.2"   :scope "test"]
