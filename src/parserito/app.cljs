@@ -179,7 +179,7 @@ close-square = whitespace ']' whitespace")
                  :rows "30"
                  :value (with-out-str
                           (pprint/pprint parse-result))
-                 :readOnly ""}]]))
+                 :readOnly "true"}]]))
 
 (defn left-col []
   [:div {:class "col-lg"}
@@ -201,3 +201,5 @@ close-square = whitespace ']' whitespace")
                       (.getElementById js/document "container"))
   (rf/dispatch-sync [:initialize-db])
   (start-update-latch 1500))
+
+(init)

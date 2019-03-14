@@ -1,0 +1,5 @@
+^{:watch-dirs [#_"test" "src"]
+  :css-dirs ["resources/public/css"]
+  :auto-testing true}
+{:main parserito.app
+ :output-to "target/public/js/app.js"}
