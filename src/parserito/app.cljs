@@ -56,6 +56,17 @@ close-square = whitespace ']' whitespace")
 ;; re-frame
 ;;
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; utils
+
+(defn format-json [s]
+  (.stringify js/JSON (clj->js s) nil 2))
+
+(defn format-edn [s]
+  (with-out-str (pprint/pprint s)))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; handlers
@@ -67,7 +78,9 @@ close-square = whitespace ']' whitespace")
           :parse-description initial-parse-description
           :input-text initial-input-text
           :parse-result (parser initial-input-text)
-          :should-recompute-parser false}}))
+          :should-recompute-parser false
+          :output-format :edn
+          :format-fn format-edn}}))
 
 (defn recompute-parser [db]
   (if (:should-recompute-parser db)
@@ -100,7 +113,20 @@ close-square = whitespace ']' whitespace")
 (defn reset-parser-update-latch [{:keys [db] :as coeffects} [_ _]]
   {:db (assoc db :should-recompute-parser true)})
 
+(defn toggle-output-format [{:keys [db] :as coeffects} [_ change]]
+  (let [output-format (if (= :edn (:output-format db))
+                        :json
+                        :edn)
+        format-fn (case output-format
+                    :json format-json
+                    :edn format-edn)]
+
+    {:db (assoc db
+                :output-format output-format
+                :format-fn format-fn)}))
+
 ;; event registrations
+
 
 (rf/reg-event-fx
  :initialize-db
@@ -118,6 +144,10 @@ close-square = whitespace ']' whitespace")
  :reset-parser-update-latch
  reset-parser-update-latch)
 
+(rf/reg-event-fx
+ :toggle-output-format
+ toggle-output-format)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; queries
@@ -130,6 +160,12 @@ close-square = whitespace ']' whitespace")
 
 (defn input-text [db v]
   (:input-text db))
+
+(defn output-format [db v]
+  (:output-format db))
+
+(defn format-fn [db v]
+  (:format-fn db))
 
 ;; query registrations
 
@@ -144,6 +180,10 @@ close-square = whitespace ']' whitespace")
 (rf/reg-sub
  :input-text
  input-text)
+
+(rf/reg-sub
+ :format-fn
+ format-fn)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -171,15 +211,22 @@ close-square = whitespace ']' whitespace")
                :value @(rf/subscribe [:input-text])
                :on-change #(rf/dispatch [:update-input-text (-> % .-target .-value)])}]])
 
+(defn output-format-button []
+  [:button {:type "button"
+            :class "btn-light"
+            :value "Switch Formatter"
+            :on-click #(rf/dispatch [:toggle-output-format (-> % .-target .-value)])}
+   "Switch Formatter"])
+
 (defn result-display []
   (when-let [parse-result @(rf/subscribe [:parse-result])]
-    [:div
-     [:textarea {:type "text"
-                 :class "form-control"
-                 :rows "30"
-                 :value (with-out-str
-                          (pprint/pprint parse-result))
-                 :readOnly "true"}]]))
+    (let [format-fn @(rf/subscribe [:format-fn])]
+      [:div
+       [:textarea {:type "text"
+                   :class "form-control"
+                   :rows "30"
+                   :value (format-fn parse-result)
+                   :readOnly "true"}]])))
 
 (defn left-col []
   [:div {:class "col-lg"}
@@ -189,6 +236,7 @@ close-square = whitespace ']' whitespace")
 (defn right-col []
   [:div {:class "col-lg"}
    [:h3 "result"]
+   [output-format-button]
    [result-display]])
 
 (defn calling-component []
