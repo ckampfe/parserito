@@ -6,7 +6,7 @@
             [reagent.core :as r]))
 
 (def initial-parse-description
-  "(* A primitive json parser to mess around with. Try changed the parser and the input to see what happens! *)
+  "(*\nA primitive json parser to mess around with.\nTry changing the parser and the input to see what happens!\n*)
 
 JSON = object
 <keypairs> = (keypair <comma>*)+
